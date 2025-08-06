@@ -1,103 +1,81 @@
-import Image from "next/image";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="min-h-screen bg-gradient-to-b from-white to-gray-50/60 flex items-center justify-center">
+      {/* Background pattern - slightly more visible */}
+      <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#d1d5db_1px,transparent_1px),linear-gradient(to_bottom,#d1d5db_1px,transparent_1px)] bg-[size:6rem_4rem] opacity-80" />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      <section className="w-full px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col items-center space-y-12 text-center">
+        {/* Hero content */}
+        <header className="space-y-8">
+          <h1 className="text-4xl font-bold tracking-tight md:text-6xl bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
+            AI Assistant
+          </h1>
+          <div className="max-w-[650px] space-y-4">
+            <p className="text-lg text-gray-600 md:text-xl/relaxed xl:text-2xl/relaxed leading-relaxed">
+              Your smart AI assistant that can summarize YouTube videos,
+              interact with external APIs via tools, and search Google Books{" "}
+              <span className="text-gray-800 font-medium">
+                all inside chat.
+              </span>
+            </p>
+          </div>
+        </header>
+
+        {/* CTA Button */}
+        <SignedIn>
+          <Link href="/dashboard">
+            <button className="group relative inline-flex items-center justify-center px-10 py-4 text-lg cursor-pointer font-semibold text-white bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl hover:from-gray-800 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1">
+              Get Started
+              <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </button>
+          </Link>
+        </SignedIn>
+
+        <SignedOut>
+          <SignInButton
+            mode="modal"
+            fallbackRedirectUrl={"/dashboard"}
+            forceRedirectUrl={"/dashboard"}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <button className="group relative inline-flex items-center justify-center px-10 py-4 cursor-pointer text-lg font-semibold text-white bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl hover:from-gray-800 hover:to-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1">
+              Sign Up
+              <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </button>
+          </SignInButton>
+        </SignedOut>
+
+        {/* Features grid - enhanced cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 py-8 max-w-4xl mx-auto">
+          {[
+            {
+              title: "YouTube Summarizer",
+              description: "Drop a link, get a summary.",
+            },
+            {
+              title: "Web Tool Agent",
+              description: "Interacts with APIs & JSON data.",
+            },
+            {
+              title: "Book Finder",
+              description: "Powered by Google Books API.",
+            },
+          ].map(({ title, description }) => (
+            <div
+              key={title}
+              className="text-center group p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="text-2xl font-bold text-gray-900 mb-3">
+                {title}
+              </div>
+              <div className="text-gray-600 leading-relaxed">{description}</div>
+            </div>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+    </main>
   );
 }
