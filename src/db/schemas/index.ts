@@ -1,4 +1,4 @@
-import { pgTable, serial, text, varchar, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: varchar("id", { length: 255 }).primaryKey(),
@@ -8,8 +8,8 @@ export const users = pgTable("users", {
 });
 
 export const chats = pgTable("chats", {
-  id: serial("id").primaryKey(),
-  userId: varchar("user_id", { length: 255 }).notNull(),
-  title: text("title").notNull(),
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: text("user_id").notNull(),
+  title: text("title").default("New Chat").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
