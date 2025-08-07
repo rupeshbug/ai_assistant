@@ -68,7 +68,7 @@ export default function LandingPage() {
               key={title}
               className="text-center group p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
             >
-              <div className="text-2xl font-bold text-gray-900 mb-3">
+              <div className="text-2xl font-bold text-gray-700 mb-3">
                 {title}
               </div>
               <div className="text-gray-600 leading-relaxed">{description}</div>
