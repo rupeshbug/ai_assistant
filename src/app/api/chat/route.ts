@@ -4,10 +4,12 @@ import { chats } from "@/db/schemas";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
-export async function POST() {
+export async function GET() {
   const { userId } = await auth();
 
-  if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
 
   const allChats = await db
     .select()

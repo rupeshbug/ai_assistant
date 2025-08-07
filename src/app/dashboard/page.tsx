@@ -1,7 +1,33 @@
 import { UserButton } from "@clerk/nextjs";
 import Sidebar from "../components/Sidebar";
+import { auth, clerkClient } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { db } from "@/db/drizzle";
+import { eq } from "drizzle-orm";
+import { users } from "@/db/schemas";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const { userId } = await auth();
+
+  if (!userId) {
+    redirect("/");
+  }
+
+  // Check if user exists
+  const existingUser = await db.query.users.findFirst({
+    where: eq(users.id, userId),
+  });
+
+  if (!existingUser) {
+    const client = await clerkClient();
+    const user = await client.users.getUser(userId);
+    await db.insert(users).values({
+      id: userId,
+      email: user.emailAddresses[0]?.emailAddress ?? "",
+      name: user.firstName ?? "",
+    });
+  }
+
   return (
     <div className="min-h-screen flex bg-[#212121] text-white">
       {/* Sidebar */}

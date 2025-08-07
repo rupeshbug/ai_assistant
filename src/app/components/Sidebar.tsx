@@ -15,9 +15,18 @@ export default function Sidebar() {
 
   useEffect(() => {
     const fetchChats = async () => {
-      const res = await fetch("/api/chat/list");
-      const data = await res.json();
-      setChats(data);
+      try {
+        const res = await fetch("/api/chat");
+        if (!res.ok) {
+          console.error("Failed to fetch chats:", res.status);
+          return;
+        }
+
+        const data = await res.json();
+        setChats(data);
+      } catch (err) {
+        console.error("Error fetching chats:", err);
+      }
     };
 
     fetchChats();
