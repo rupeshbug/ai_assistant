@@ -1,4 +1,4 @@
-import { tavilySearch } from "./tools";
+import { tools } from "./tools";
 import {
   START,
   END,
@@ -7,8 +7,21 @@ import {
 } from "@langchain/langgraph";
 import { ChatGroq } from "@langchain/groq";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
+import {
+  ChatPromptTemplate,
+  MessagesPlaceholder,
+} from "@langchain/core/prompts";
 
-const tools = [tavilySearch];
+const prompt = ChatPromptTemplate.fromMessages([
+  [
+    "system",
+    `You are an AI assistant with access to tools like web search and Google Scholar.
+     Use these tools to answer user queries when relevant.
+     If the question is general knowledge or unclear, respond directly.
+     Always try to use the tools for research or up-to-date information.`,
+  ],
+  new MessagesPlaceholder("messages"),
+]);
 
 const llmWithTools = new ChatGroq({
   model: "qwen/qwen3-32b",
@@ -17,8 +30,28 @@ const llmWithTools = new ChatGroq({
 }).bindTools(tools);
 
 const callModel = async (state: typeof MessagesAnnotation.State) => {
-  const response = await llmWithTools.invoke(state["messages"]);
-  return { messages: response };
+  const messages = state["messages"];
+
+  // Format messages with the system prompt applied
+  const formattedMessages = await prompt.formatMessages({ messages });
+
+  // Invoke the LLM with tools
+  const response = await llmWithTools.invoke(formattedMessages);
+
+  // response is a single message, so no indexing needed
+  const lastResponse = response;
+
+  if (
+    lastResponse.tool_calls &&
+    Array.isArray(lastResponse.tool_calls) &&
+    lastResponse.tool_calls.length > 0
+  ) {
+    console.log("🔧 Tool calls detected:", lastResponse.tool_calls);
+  } else {
+    console.log("🧠 No tool calls in LLM response");
+  }
+
+  return { messages: [response] };
 };
 
 const shouldContinue = (state: typeof MessagesAnnotation.State) => {
