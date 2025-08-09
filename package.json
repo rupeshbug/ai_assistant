@@ -10,13 +10,21 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.28.1",
+    "@langchain/community": "^0.3.50",
+    "@langchain/core": "^0.3.68",
+    "@langchain/google-genai": "^0.2.16",
+    "@langchain/groq": "^0.2.3",
+    "@langchain/langgraph": "^0.4.3",
+    "@langchain/tavily": "^0.1.5",
     "@neondatabase/serverless": "^1.0.1",
     "dotenv": "^17.2.1",
     "drizzle-orm": "^0.44.4",
+    "langchain": "^0.3.30",
     "lucide-react": "^0.536.0",
     "next": "15.4.5",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "tslab": "^1.0.22"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
