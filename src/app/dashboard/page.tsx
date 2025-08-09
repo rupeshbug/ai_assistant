@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/db/drizzle";
 import { eq } from "drizzle-orm";
 import { users } from "@/db/schemas";
+import ChatWrapper from "../components/ChatWrapper";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
@@ -41,8 +42,7 @@ export default async function DashboardPage() {
           <UserButton />
         </div>
 
-        {/* Welcome Card */}
-        <div className="flex flex-col items-center bg-[#292929] w-full max-w-xl mx-auto py-10 px-8 rounded-lg hover:scale-[1.02] transition-transform duration-300 cursor-pointer">
+        {/* <div className="flex flex-col items-center bg-[#292929] w-full max-w-xl mx-auto py-10 px-8 rounded-lg hover:scale-[1.02] transition-transform duration-300 cursor-pointer">
           <h2 className="text-2xl font-semibold mb-3">
             Welcome to your AI Assistant
           </h2>
@@ -51,7 +51,6 @@ export default async function DashboardPage() {
             sidebar. Your intelligent assistant is here to help.
           </p>
 
-          {/* Features */}
           <div className="pt-6 flex gap-4 text-sm">
             <div className="flex items-center gap-2 group">
               <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 shadow-sm group-hover:scale-110 transition-transform" />
@@ -70,7 +69,8 @@ export default async function DashboardPage() {
               <span className="text-gray-300 font-medium">Powerful tools</span>
             </div>
           </div>
-        </div>
+        </div> */}
+        <ChatWrapper />
       </main>
     </div>
   );

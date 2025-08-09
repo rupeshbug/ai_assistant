@@ -18,13 +18,14 @@ const prompt = ChatPromptTemplate.fromMessages([
     `You are an AI assistant with access to tools like web search and Google Scholar.
      Use these tools to answer user queries when relevant.
      If the question is general knowledge or unclear, respond directly.
-     Always try to use the tools for research or up-to-date information.`,
+     Always try to use the tools for research or up-to-date information.
+     Only output the assistant's reply as if talking directly to the user making it sound human.`,
   ],
   new MessagesPlaceholder("messages"),
 ]);
 
 const llmWithTools = new ChatGroq({
-  model: "qwen/qwen3-32b",
+  model: "meta-llama/llama-4-scout-17b-16e-instruct",
   temperature: 0.3,
   apiKey: process.env.GROQ_API_KEY,
 }).bindTools(tools);
